@@ -1,3 +1,11 @@
+"""Test suite for Article class from many_to_many.py
+
+Tests validate:
+- Article initialization with title, author, and magazine
+- Title immutability and validation (5-50 character range)
+- Author and magazine mutability and type constraints
+- All articles are tracked in Article.all class variable
+"""
 import pytest
 
 from classes.many_to_many import Article
@@ -72,6 +80,7 @@ class TestArticle:
         assert isinstance(article_1.author, Author)
         assert isinstance(article_2.author, Author)
         
+        # Verify author can be changed after article creation
         article_1.author = author_2
         assert isinstance(article_1.author, Author)
         assert article_1.author.name == "Nathaniel Hawthorne"
@@ -98,12 +107,14 @@ class TestArticle:
         assert isinstance(article_1.magazine, Magazine)
         assert isinstance(article_2.magazine, Magazine)
         
+        # Verify magazine can be changed after article creation
         article_1.magazine = magazine_2
         assert isinstance(article_1.magazine, Magazine)
         assert article_1.magazine.name == "AD"
 
     def test_get_all_articles(self):
         """Article class has all attribute"""
+        # Reset the class-level all list to ensure clean test state
         Article.all = []
         author = Author("Carry Bradshaw")
         magazine_1 = Magazine("Vogue", "Fashion")

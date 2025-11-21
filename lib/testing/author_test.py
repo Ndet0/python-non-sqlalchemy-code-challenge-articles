@@ -1,3 +1,13 @@
+"""Test suite for Author class from many_to_many.py
+
+Tests validate:
+- Author initialization with a name
+- Author name immutability (cannot be changed after creation)
+- Author can track many articles via articles() method
+- Author can retrieve unique magazines via magazines() method
+- Author can create new articles via add_article() convenience method
+- Author topic_areas() returns unique magazine categories
+"""
 import pytest
 
 from classes.many_to_many import Article
@@ -115,8 +125,10 @@ class TestAuthor:
         magazine_2 = Magazine("AD", "Architecture")
         Article(author_1, magazine_1, "How to wear a tutu with style")
         Article(author_1, magazine_2, "2023 Eccentric Design Trends")
+        # Create second article in magazine_2 to test uniqueness
         Article(author_1, magazine_2, "Carrara Marble is so 2020")
 
+        # Verify no duplicates in magazines list despite multiple articles
         assert len(set(author_1.magazines())) == len(author_1.magazines())
         assert len(author_1.magazines()) == 2
 
@@ -147,6 +159,7 @@ class TestAuthor:
         author_1.add_article(magazine_2, "Carrara Marble is so 2020")
         author_2.add_article(magazine_2, "2023 Eccentric Design Trends")
 
+        # Verify topic_areas returns unique categories from author's magazines
         assert len(author_1.topic_areas()) == 2
         assert set(author_1.topic_areas()) == {"Fashion", "Architecture"}
         assert author_2.topic_areas() == ["Architecture"]
@@ -158,9 +171,11 @@ class TestAuthor:
         magazine_1 = Magazine("Vogue", "Fashion")
         magazine_2 = Magazine("AD", "Architecture")
         author_1.add_article(magazine_1, "How to wear a tutu with style")
+        # Create second article in same magazine to test uniqueness
         author_1.add_article(magazine_1, "Dating life in NYC")
         author_1.add_article(magazine_2, "2023 Eccentric Design Trends")
 
+        # Verify no duplicate categories despite multiple articles in same category
         assert len(set(author_1.topic_areas())) == len(author_1.topic_areas())
         assert len(author_1.topic_areas()) == 2
         assert "Fashion" in author_1.topic_areas()

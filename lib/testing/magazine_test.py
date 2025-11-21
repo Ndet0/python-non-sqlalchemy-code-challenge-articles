@@ -1,3 +1,13 @@
+"""Test suite for Magazine class from many_to_many.py
+
+Tests validate:
+- Magazine initialization with name and category
+- Magazine name mutability with validation (2-16 character range)
+- Magazine category mutability with validation (non-empty string)
+- Magazine tracks articles and provides contributor (author) lists
+- Magazine can return article titles and authors who contributed >2 articles
+- Magazine.top_publisher() class method returns magazine with most articles
+"""
 import pytest
 
 from classes.many_to_many import Article
@@ -114,6 +124,7 @@ class TestMagazine:
         article_2 = Article(author_1, magazine_1, "Dating life in NYC")
         article_3 = Article(author_1, magazine_2, "2023 Eccentric Design Trends")
 
+        # Verify magazine_1 has articles 1 and 2, not article 3
         assert len(magazine_1.articles()) == 2
         assert len(magazine_2.articles()) == 1
         assert article_1 in magazine_1.articles()
@@ -163,9 +174,11 @@ class TestMagazine:
         author_2 = Author("Nathaniel Hawthorne")
         magazine_1 = Magazine("Vogue", "Fashion")
         Article(author_1, magazine_1, "How to wear a tutu with style")
+        # Create second article from same author to test uniqueness
         Article(author_1, magazine_1, "How to be single and happy")
         Article(author_2, magazine_1, "Dating life in NYC")
 
+        # Verify contributors list has no duplicates despite author_1 having 2 articles
         assert len(set(magazine_1.contributors())) == len(magazine_1.contributors())
         assert len(magazine_1.contributors()) == 2
 
@@ -192,10 +205,13 @@ class TestMagazine:
         author_2 = Author("Nathaniel Hawthorne")
         magazine_1 = Magazine("Vogue", "Fashion")
         magazine_2 = Magazine("AD", "Architecture")
+        # author_1 writes 3 articles for magazine_1, so should be in contributing_authors
         Article(author_1, magazine_1, "How to wear a tutu with style")
         Article(author_1, magazine_1, "How to be single and happy")
         Article(author_1, magazine_1, "Dating life in NYC")
+        # author_1 writes 1 article for magazine_2
         Article(author_1, magazine_2, "Carrara Marble is so 2020")
+        # author_2 writes only 1 article for magazine_2
         Article(author_2, magazine_2, "2023 Eccentric Design Trends")
 
         assert author_1 in magazine_1.contributing_authors()
@@ -205,6 +221,7 @@ class TestMagazine:
 
     def test_top_publisher(self):
         """returns the magazine with the most articles"""
+        # Reset to clean state
         Magazine.all = []
         Article.all = []
         assert Magazine.top_publisher() == None
@@ -212,8 +229,10 @@ class TestMagazine:
         author_1 = Author("Carry Bradshaw")
         magazine_1 = Magazine("Vogue", "Fashion")
         magazine_2 = Magazine("AD", "Architecture")
+        # No articles yet, should still return None
         assert Magazine.top_publisher() == None
 
+        # Add articles; magazine_1 should have 3, magazine_2 should have 2
         Article(author_1, magazine_1, "How to wear a tutu with style")
         Article(author_1, magazine_1, "Dating life in NYC")
         Article(author_1, magazine_1, "How to be single and happy")
