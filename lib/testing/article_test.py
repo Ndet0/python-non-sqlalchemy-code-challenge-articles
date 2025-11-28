@@ -1,11 +1,3 @@
-"""Test suite for Article class from many_to_many.py
-
-Tests validate:
-- Article initialization with title, author, and magazine
-- Title immutability and validation (5-50 character range)
-- Author and magazine mutability and type constraints
-- All articles are tracked in Article.all class variable
-"""
 import pytest
 
 from classes.many_to_many import Article

@@ -1,13 +1,3 @@
-"""Test suite for Magazine class from many_to_many.py
-
-Tests validate:
-- Magazine initialization with name and category
-- Magazine name mutability with validation (2-16 character range)
-- Magazine category mutability with validation (non-empty string)
-- Magazine tracks articles and provides contributor (author) lists
-- Magazine can return article titles and authors who contributed >2 articles
-- Magazine.top_publisher() class method returns magazine with most articles
-"""
 import pytest
 
 from classes.many_to_many import Article

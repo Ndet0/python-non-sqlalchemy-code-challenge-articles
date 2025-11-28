@@ -1,13 +1,3 @@
-"""Test suite for Author class from many_to_many.py
-
-Tests validate:
-- Author initialization with a name
-- Author name immutability (cannot be changed after creation)
-- Author can track many articles via articles() method
-- Author can retrieve unique magazines via magazines() method
-- Author can create new articles via add_article() convenience method
-- Author topic_areas() returns unique magazine categories
-"""
 import pytest
 
 from classes.many_to_many import Article
